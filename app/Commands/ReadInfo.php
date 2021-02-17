@@ -41,25 +41,28 @@ class ReadInfo extends Command
      */
     public function handle()
     {
-        $data = [];
+        while(true) {
+            $data = [];
+            $cpusSpeed = $this->utils->getClockSpeed();
+            $temp = $this->utils->getTemp();
 
-        $cpusSpeed = $this->utils->getClockSpeed();
-        $temp = $this->utils->getTemp();
+            $headers = ['TIME', 'CPUS', 'CPU0', 'CPU1', 'CPU2', 'CPU3', 'TEMP'];
 
-        $headers = ['TIME', 'CPUS', 'CPU0', 'CPU1', 'CPU2', 'CPU3', 'TEMP'];
-
-        $data[] =
-            [
-                'TIME' => (Carbon::now()->toTimeString()),
-                'CORES' => $this->utils->getNumberCpus(),
-                'CPU0' => $cpusSpeed[0],
-                'CPU1' => $cpusSpeed[1],
-                'CPU2' => $cpusSpeed[2],
-                'CPU3' => $cpusSpeed[3],
-                'TEMP' => $temp,
+            $data[] =
+                [
+                    'TIME' => (Carbon::now()->toTimeString()),
+                    'CORES' => $this->utils->getNumberCpus(),
+                    'CPU0' => $cpusSpeed[0],
+                    'CPU1' => $cpusSpeed[1],
+                    'CPU2' => $cpusSpeed[2],
+                    'CPU3' => $cpusSpeed[3],
+                    'TEMP' => $temp,
 
 
-        ];
-           $this->table($headers, $data);
+                ];
+            $this->table($headers, $data);
+
+            sleep(1);
+        }
     }
 }
